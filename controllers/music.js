@@ -1,7 +1,8 @@
-const data = require("./../models/data.json");
+//const data = require("./../models/data.json");
+const Music = require("../models/Music");
 
 const controllerMusic = {
-  find: (req, res) => {
+  find: async (req, res) => {
     if (req.query.search) {
       const query = req.query.search;
       const result = data.filter((song) =>
@@ -13,12 +14,16 @@ const controllerMusic = {
       res.status(200).json({ result });
       console.log(result);
     } else {
+      const data = await Music.findAll();
       res.status(200).json({ result: data });
     }
   },
 
-  create: (req, res) => {
+  create: async (req, res) => {
     console.log(req.body);
+    const data = await Music.create(req.body);
+    console.log(data);
+    vn;
     res
       .status(201)
       .json({ message: "votre musique a été ajoutée", data: req.body });
@@ -34,6 +39,16 @@ const controllerMusic = {
     }
 
     return res.status(200).json({ result: data[id - 1] });
+  },
+
+  delete: async (req, res) => {
+    const id = req.params.id;
+    const data = await Music.destoy({
+      where: {
+        id: id,
+      },
+    });
+    res.status(200).json({ message: "Suppresion effectuée." });
   },
 
   random: (req, res) => {},

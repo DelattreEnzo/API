@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const connexion = require("./DB/dbconnect");
 const app = express();
 const port = 3000;
 const version = "v1";
@@ -8,6 +9,8 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerJsdoc = require("swagger-jsdoc");
 const options = require("./swagger.json");
 const specs = swaggerJsdoc(options);
+const Music = require("./models/Music");
+const { SELECT } = require("sequelize/lib/query-types");
 
 app.use(cors());
 app.use(express.json());
@@ -19,6 +22,9 @@ app.use(
   swaggerUi.setup(specs, { explorer: true })
 );
 
-app.listen(port, () => {
-  console.log("Example app listening on port ${port}");
+connexion.sync().then(() => {
+  console.log("DBconnect est synchronisé");
+  app.listen(port, () => {
+    console.log("Example app listening on port ${port}");
+  });
 });
