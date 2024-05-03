@@ -23,7 +23,6 @@ const controllerMusic = {
     console.log(req.body);
     const data = await Music.create(req.body);
     console.log(data);
-    vn;
     res
       .status(201)
       .json({ message: "votre musique a été ajoutée", data: req.body });
